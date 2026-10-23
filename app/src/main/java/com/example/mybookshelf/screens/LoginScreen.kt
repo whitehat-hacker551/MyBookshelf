@@ -16,9 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.*
+
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -96,9 +95,13 @@ fun FieldSection(navtoHome: (String) -> Unit){
 
         FieldNombre(nombre,onNombreChange = {nombre=it})
         FieldPassword(password,onPasswordChange = {password=it})
-        Row(){
-            LoginButton(nombre,password,navtoHome)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ){
+            SignInButton(nombre,password,navtoHome)
+            SignUpButton()
         }
+        SignInWithGoogleButton()
     }
 
 }
@@ -142,13 +145,52 @@ fun FieldPassword(password:String,onPasswordChange:(String)->Unit){
 
 }
 @Composable
-fun LoginButton(nombre:String,password:String,navtoHome: (String) -> Unit){
+fun SignInButton(nombre:String,password:String,navtoHome: (String) -> Unit){
     val toast = Toast.makeText(LocalContext.current, "Contraseña Incorrecta", Toast.LENGTH_SHORT)
 
     Button(
-        onClick = { if(password=="123456") navtoHome(nombre) else toast.show() },
+        onClick = {
+            if(password=="123456"){
+                if(nombre.contains("@")){
+                    navtoHome(nombre.substringBefore("@"))
+                }else{
+                    navtoHome(nombre)
+
+                }
+            }  else{
+                toast.show()
+            }
+
+        },
+
+
         modifier = Modifier.padding(top = 10.dp),
         content={Text("Iniciar Sesión")}
+    )
+}
+@Composable
+fun SignUpButton(){
+    val toast = Toast.makeText(LocalContext.current, "Registro no Implementado", Toast.LENGTH_SHORT)
+
+    Button(
+        onClick = { toast.show() },
+        modifier = Modifier.padding(top = 10.dp),
+        content={Text("Registrate")}
+    )
+}
+@Composable
+fun SignInWithGoogleButton(){
+    val toast = Toast.makeText(LocalContext.current, "No Implementado", Toast.LENGTH_SHORT)
+
+    Button(
+        onClick = { toast.show() },
+        modifier = Modifier.padding(top = 10.dp),
+        content={
+            Icon(
+                imageVector = Icons.Filled.GMobiledata,
+                contentDescription = "Iniciar Sesión con Google",
+            )
+        }
     )
 }
 
